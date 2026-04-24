@@ -10,7 +10,7 @@
 **A production-grade Sudoku solver built on Constraint Satisfaction Problem (CSP) theory.**  
 Solves any valid 9×9 puzzle using Backtracking, AC-3 Arc Consistency, MRV, Degree Heuristic, and LCV — the same techniques used in real AI planning systems.
 
-[🌐 Live Demo](ADD_VERCEL_LINK_HERE) • [📝 Medium Article](ADD_MEDIUM_LINK_HERE) • [⭐ Star this repo](#)
+[🌐 Live Demo](https://vercel.com/zohaashrafs-projects/ai-sudoku-solver) • [📝 Medium Article](ADD_MEDIUM_LINK_HERE) • [⭐ Star this repo](#)
 
 </div>
 
