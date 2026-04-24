@@ -1,28 +1,25 @@
 """
-main.py — CLI interface for the CSP Sudoku Solver
-Supports interactive menu, batch solving, and custom file loading.
+main.py — CLI & GUI entry point for the CSP Sudoku Solver/Game
+Supports:
+  - Interactive GUI game (Tkinter)
+  - Interactive CLI menu
+  - Batch solving
+  - Custom file loading
 """
 
 import sys
 import time
-import os
 import argparse
 from pathlib import Path
 
-# Allow imports from the package root
 sys.path.insert(0, str(Path(__file__).parent))
 
 from solver import SudokuSolver
-from io_utils import (
-    load_grid_from_file,
-    print_grid,
-    print_comparison,
-    is_valid_solution,
-)
+from io_utils import load_grid_from_file, print_grid, print_comparison, is_valid_solution
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 #  ANSI colour helpers
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 _USE_COLOR = sys.stdout.isatty()
 
 def _c(code: str, text: str) -> str:
@@ -35,9 +32,9 @@ BOLD   = lambda t: _c("1",  t)
 DIM    = lambda t: _c("2",  t)
 RED    = lambda t: _c("91", t)
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 #  Puzzle registry
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 PUZZLES_DIR = Path(__file__).parent / "puzzles"
 
 PUZZLE_REGISTRY = {
@@ -48,15 +45,15 @@ PUZZLE_REGISTRY = {
 }
 
 DIFFICULTY_EMOJI = {
-    "easy": "🟢",
-    "medium": "🟡",
-    "hard": "🔴",
+    "easy":     "🟢",
+    "medium":   "🟡",
+    "hard":     "🔴",
     "veryhard": "⚫",
 }
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 #  Core solve routine
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 
 def solve_puzzle(name: str, path: Path, verbose: bool = True) -> dict:
     """Load, solve, and optionally display a single puzzle. Returns metrics."""
@@ -95,17 +92,15 @@ def solve_puzzle(name: str, path: Path, verbose: bool = True) -> dict:
     return metrics
 
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 #  Batch mode
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 
 def run_all(verbose: bool = True) -> list[dict]:
-    """Solve all registered puzzles and print a summary table."""
     all_metrics = []
     for name, path in PUZZLE_REGISTRY.items():
         m = solve_puzzle(name, path, verbose=verbose)
         all_metrics.append(m)
-
     _print_summary(all_metrics)
     return all_metrics
 
@@ -129,11 +124,9 @@ def _print_summary(metrics: list[dict]) -> None:
             f"  {status:>8}"
         )
     print(f"{'═' * w}")
-
-    # Difficulty comparison commentary
     print(f"\n  {BOLD('Difficulty Analysis:')}")
     if len(metrics) >= 2:
-        easy = next((m for m in metrics if m["name"] == "easy"), None)
+        easy  = next((m for m in metrics if m["name"] == "easy"), None)
         vhard = next((m for m in metrics if m["name"] == "veryhard"), None)
         if easy and vhard and easy["backtracks"] > 0:
             ratio = vhard["backtracks"] / max(easy["backtracks"], 1)
@@ -142,19 +135,18 @@ def _print_summary(metrics: list[dict]) -> None:
     print(f"  • LCV ordering minimises domain wipeouts\n")
 
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 #  Interactive CLI menu
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 
 def interactive_menu() -> None:
     BANNER = r"""
   ╔══════════════════════════════════════════╗
-  ║   CSP SUDOKU SOLVER  — v1.0              ║
+  ║   CSP SUDOKU SOLVER  — v2.0              ║
   ║   Backtracking · AC-3 · MRV · LCV        ║
   ╚══════════════════════════════════════════╝
 """
     print(CYAN(BANNER))
-
     while True:
         print(BOLD("  Choose an option:"))
         print("  [1] Solve Easy")
@@ -163,9 +155,10 @@ def interactive_menu() -> None:
         print("  [4] Solve Very Hard")
         print("  [5] Solve ALL puzzles")
         print("  [6] Load custom puzzle file")
+        print("  [G] Launch GUI Game")
         print("  [0] Exit")
         print()
-        choice = input(BOLD("  → ")).strip()
+        choice = input(BOLD("  → ")).strip().upper()
 
         if choice == "0":
             print(DIM("  Goodbye.\n"))
@@ -183,38 +176,48 @@ def interactive_menu() -> None:
                 solve_puzzle(p.stem, p)
             else:
                 print(RED(f"  File not found: {file_path}"))
+        elif choice == "G":
+            launch_gui()
         else:
             print(YELLOW("  Invalid choice, please try again."))
         print()
 
 
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+#  GUI launcher
+# ─────────────────────────────────────────────────────────────────────────────
+
+def launch_gui():
+    try:
+        from game_gui import main as gui_main
+        print(DIM("  Launching GUI..."))
+        gui_main()
+    except ImportError as e:
+        print(RED(f"  GUI requires tkinter: {e}"))
+        print(YELLOW("  Install with: pip install tk (or use system Python with tkinter)"))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Entry point
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="CSP Sudoku Solver — Backtracking + AC-3 + MRV + LCV"
+        description="CSP Sudoku Solver/Game — Backtracking + AC-3 + MRV + LCV"
     )
-    parser.add_argument(
-        "--all", action="store_true",
-        help="Solve all four built-in puzzles non-interactively"
-    )
-    parser.add_argument(
-        "--puzzle", choices=["easy", "medium", "hard", "veryhard"],
-        help="Solve a specific built-in puzzle"
-    )
-    parser.add_argument(
-        "--file", type=str,
-        help="Path to a custom puzzle file"
-    )
+    parser.add_argument("--gui",    action="store_true",  help="Launch interactive GUI game")
+    parser.add_argument("--all",    action="store_true",  help="Solve all four built-in puzzles")
+    parser.add_argument("--puzzle", choices=["easy","medium","hard","veryhard"],
+                        help="Solve a specific built-in puzzle")
+    parser.add_argument("--file",   type=str,             help="Path to a custom puzzle file")
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-
-    if args.all:
+    if args.gui:
+        launch_gui()
+    elif args.all:
         run_all()
     elif args.puzzle:
         solve_puzzle(args.puzzle, PUZZLE_REGISTRY[args.puzzle])
