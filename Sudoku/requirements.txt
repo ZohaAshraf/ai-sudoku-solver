@@ -1,0 +1,9 @@
+# CSP Sudoku Game — Python dependencies
+# Core stdlib only (tkinter ships with Python)
+# No third-party packages required for GUI version
+
+# Optional: for enhanced terminal UI (not currently used)
+# rich>=13.0.0
+
+# For development/testing
+# pytest>=7.0.0
