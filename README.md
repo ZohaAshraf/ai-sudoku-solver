@@ -10,7 +10,7 @@
 **A production-grade Sudoku solver built on Constraint Satisfaction Problem (CSP) theory.**  
 Solves any valid 9×9 puzzle using Backtracking, AC-3 Arc Consistency, MRV, Degree Heuristic, and LCV — the same techniques used in real AI planning systems.
 
-[🌐 Live Demo](https://ai-sudoku-solver-theta.vercel.app) • [📝 Medium Article](ADD_MEDIUM_LINK_HERE) • [⭐ Star this repo](#)
+[🌐 Live Demo](https://ai-sudoku-solver-theta.vercel.app) • [📝 Medium Article](https://medium.com/@f243019/i-built-an-ai-that-solves-the-worlds-hardest-sudoku-here-s-exactly-how-it-works-fd45be5332c1) • [⭐ Star this repo](#)
 
 </div>
 
