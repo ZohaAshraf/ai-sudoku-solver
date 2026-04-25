@@ -18,10 +18,7 @@ Solves any valid 9×9 puzzle using Backtracking, AC-3 Arc Consistency, MRV, Degr
 
 ## 📸 Preview
 
-
-https://github.com/user-attachments/assets/22838843-8254-4d1f-aaab-6b48f97094bd
-
-
+https://github.com/user-attachments/assets/ae1290d5-e09a-4482-a034-966db9c910c2
 
 ```
         PUZZLE                      SOLUTION
