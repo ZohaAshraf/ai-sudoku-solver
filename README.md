@@ -64,7 +64,7 @@ Solves any valid 9×9 puzzle using Backtracking, AC-3 Arc Consistency, MRV, Degr
 | 🔴 Hard | 12,011 ms | 5,275 | 7,684 | ✅ Solved |
 | ⚫ Very Hard *(AI Escargot)* | 658 ms | 330 | 365 | ✅ Solved |
 
-> **Key insight:** The "Very Hard" AI Escargot puzzle solved faster than "Hard" with fewer backtracks.
+> **Key insight:** The "Very Hard" AI Escargot puzzle solved faster than "Hard" with fewer backtracks.  
 > CSP difficulty and human-perceived difficulty are completely different axes.
 
 ---
@@ -76,7 +76,7 @@ Solves any valid 9×9 puzzle using Backtracking, AC-3 Arc Consistency, MRV, Degr
 ```bash
 # 1. Clone the repository
 git clone https://github.com/ZohaAshraf/ai-sudoku-solver.git
-cd ai-sudoku-solver
+cd ai-sudoku-solver/Sudoku
 
 # 2. Solve all four built-in puzzles
 python main.py --all
@@ -114,18 +114,22 @@ Nine lines of nine digits. `0` represents an empty cell.
 ```
 ai-sudoku-solver/
 │
-├── csp.py          # CSP engine — domains, AC-3, forward checking
-├── solver.py       # Backtracking with MRV / Degree / LCV
-├── io_utils.py     # File I/O, grid display, solution validation
-├── main.py         # CLI interface
-├── report.html     # Visual performance report (live on Vercel)
-├── vercel.json     # Vercel deployment config
+├── Sudoku/
+│   ├── csp.py          # CSP engine — domains, AC-3, forward checking
+│   ├── solver.py       # Backtracking with MRV / Degree / LCV
+│   ├── io_utils.py     # File I/O, grid display, solution validation
+│   ├── main.py         # CLI interface
+│   ├── game_gui.py     # GUI interface
+│   ├── index.html      # Live demo frontend (deployed on Vercel)
+│   ├── requirements.txt
+│   └── puzzles/
+│       ├── easy.txt
+│       ├── medium.txt
+│       ├── hard.txt
+│       └── veryhard.txt
 │
-└── puzzles/
-    ├── easy.txt
-    ├── medium.txt
-    ├── hard.txt
-    └── veryhard.txt
+├── report.html         # Visual performance report
+└── vercel.json         # Vercel deployment config
 ```
 
 ---
